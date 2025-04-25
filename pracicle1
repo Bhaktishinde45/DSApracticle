@@ -1,0 +1,118 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct person 
+{
+    string name;
+    int tel;
+};
+
+class person_data 
+{
+public:
+    person teldi[10], h_table[10];
+    int n, i, j, h;
+    string f, ser;
+
+    void read() 
+	{
+        cout << "\nEnter The Number Of Students : ";
+        cin >> n;
+      
+        for (i = 0; i < 10; i++) 
+		{
+            h_table[i].name = "Null";
+            h_table[i].tel = 0;
+        }
+
+       
+        for (i = 0; i < n; i++) 
+		{
+            cout << "\nEnter Name: ";
+            cin >> teldi[i].name;
+            cout << "\nEnter Telephone Number: ";
+            cin >> teldi[i].tel;
+        }
+    }
+    void show() 
+	{
+        cout << "\nName\tTelephone No.\n";
+        for (i = 0; i < n; i++) 
+		{
+            cout << teldi[i].name << "\t" << teldi[i].tel << "\n";
+        }
+    }
+
+    void ascii() 
+	{
+        for (i = 0; i < n; i++) 
+		{
+            f = teldi[i].name;
+            j = f.length();
+            int sum = 0;
+
+            
+            for (int l = 0; l < j; l++) 
+			{
+                sum += int(f[l]);
+                
+            }
+
+            h = sum % 10;
+
+            
+            while (h_table[h].name != "Null") 
+			{
+                h = (h + 1) % 10;
+            }
+
+            h_table[h] = teldi[i];
+        }
+
+        cout << "\nHash Table :- \n";
+        cout << "Name\tTelephone No.\n";
+        for (i = 0; i < 10; i++) 
+		{
+        
+		cout << h_table[i].name << "\t" << h_table[i].tel << "\n";
+        
+        }
+    }
+    void search() 
+	{
+        cout << "\nEnter The Name To Search For The Telephone Number: ";
+        cin >> ser;
+
+        h = 0;
+        j = ser.length();
+        for (i = 0; i < j; i++) 
+		{
+            h += int(ser[i]);
+        }
+        h = h % 10;
+        while (h_table[h].name != "Null") 
+		{
+            
+            if (h_table[h].name == ser) 
+			{
+                cout << "\nThe Number is: " << h_table[h].tel << endl;
+                
+                return;
+            }
+            h = (h + 1) % 10;
+        }
+
+        
+        cout << "\nName Not Found.\n";
+    }
+};
+int main() 
+{
+    person_data ob;
+    ob.read();
+    ob.show();
+    ob.ascii();
+    ob.search();
+    return 0;
+}
