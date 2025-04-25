@@ -1,0 +1,118 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+class student
+{
+	public:
+		int rollno;
+		char name[20],div;
+		char add[20];
+		void getdata()
+		{cout<<"\nEnter the roll number=";
+			cin>>rollno;
+			cout<<"\nEnter the student name=";
+			cin>>name;
+			cout<<"\nEnter the division=";
+			cin>>div;
+		    cout<<"\nEnter the address=";
+			cin>>add;
+			
+		}
+		void show()
+		{
+			cout<<"\n"<<rollno<<"\t\t\t"<<name<<"\t\t\t"<<div<<"\t\t\t"<<add;
+		}
+		
+};
+int main()
+{   student ob;
+	ifstream fin;
+	ofstream fout,temp;
+	int s,n,f;
+	char ch;
+	do{
+		cout<<"\n1.Write the data\n2.Display data\n3.insert student data\n4.search the student\n5.delete data";
+		cout<<"\nEnter the choice=";
+		cin>>s;
+		switch(s){
+			case 1:fout.open("student.txt",ios::out);
+		       cout<<"\nEnter the total number of student";
+		       cin>>n;
+		       for(int i=0;i<n;i++)
+		       {
+		       	ob.getdata();
+		       	
+				fout.write((char*)&ob,sizeof(ob));
+			   }
+			   fout.close();
+			   break;
+		case 2:
+		        cout<<"\nRollno"<<"\t\t"<<"Name"<<"\t\t"<<"div";
+		        fin.open("student.txt",ios::in);
+	            while(fin.read((char*)&ob,sizeof(ob)))
+	            {
+	            	ob.show();
+	            	
+				}
+				fin.close();
+				break;
+		case 3:fout.open("student.txt",ios::app);
+		       ob.getdata();
+		       fout.write((char*)&ob,sizeof(ob));
+		       fout.close();
+		       break;
+		case 4:cout<<"\nEnter the roll number=";
+		        cin>>n;
+	              f=0;
+		        fin.open("student.txt");
+		         while(fin)
+	            {fin.read((char*)&ob,sizeof(ob));
+	            	if(ob.rollno==n)
+	            	{ cout<<"\nRollno"<<"\t\t"<<"Name"<<"\t\t"<<"div";
+	            		ob.show();
+	            		f=1;
+	            		break;
+					}	
+				}
+				if(f==0)
+				{
+					cout<<"\nRoll number not exist";
+				}
+				fin.close();
+				break;
+				
+	    case 5:cout<<"\nEnter the rollno=";
+	            cin>>n;
+	            f=0;
+		        fin.open("student.txt",ios::in);
+		        temp.open("temp.txt",ios::out);
+		         while(fin.read((char*)&ob,sizeof(ob)))
+	            {
+	            	if(ob.rollno==n)
+	            	{
+	            		cout<<n<<" is deleted";
+	            		f=1;
+	            		continue;
+					}
+	            	temp.write((char*)&ob,sizeof(ob));
+	            	
+				}
+				fin.close();
+				temp.close();
+				remove("student.txt");
+				rename("temp.txt","student.txt");
+				if(f==0)
+				{
+					cout<<"\nRoll number not exist";
+				}
+				
+				break;
+		 
+		} cout<<"*****************************************************************************";
+		cout<<"\nDo you want to procced(y/n):->" ;
+	cin>>ch;
+	}while(ch=='y');
+	          
+return 0;	
+}
