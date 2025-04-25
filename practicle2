@@ -1,0 +1,112 @@
+#include<iostream>
+using namespace std;
+void removeLastElement(int arr[], int &size) {
+    if (size == 0) {
+        cout << "Array empty!" << endl;
+        return;
+    }
+    size--; 
+}
+
+int ArraySize(int size) {
+    return size;
+}
+bool containsElement(int arr[], int size, int elem) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == elem)
+            return true;
+    }
+    return false;
+}
+void intersection(int arr1[], int size1, int arr2[], int size2) {
+    cout << "Intersection of two sets: ";
+    bool found = false;
+    for (int i = 0; i < size1; i++) {
+        if (containsElement(arr2, size2, arr1[i])) {
+            cout << arr1[i] << " ";
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "No intersection";
+    }
+    cout << endl;
+}
+void unionSets(int arr1[], int size1, int arr2[], int size2) {
+    cout << "Union of two sets: ";
+    for (int i = 0; i < size1; i++) {
+        cout << arr1[i] << " ";
+    }
+    for (int i = 0; i < size2; i++) {
+        if (!containsElement(arr1, size1, arr2[i])) {
+            cout << arr2[i] << " ";
+        }
+    }
+    cout << endl;
+}
+void difference(int arr1[], int size1, int arr2[], int size2) {
+    cout << "Difference (arr1 - arr2): ";
+    bool found = false;
+    for (int i = 0; i < size1; i++) {
+        if (!containsElement(arr2, size2, arr1[i])) {
+            cout << arr1[i] << " ";
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "No difference";
+    }
+    cout << endl;
+}
+bool isSubset(int arr1[], int size1, int arr2[], int size2) {
+    for (int i = 0; i < size1; i++) {
+        if (!containsElement(arr2, size2, arr1[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+int main() {
+    int arr1[10], arr2[10], i, elem, size1 = 5, size2 = 5;
+    cout << "Enter 5 elements for Set 1: ";
+    for (i = 0; i < size1; i++) {
+        cin >> arr1[i];
+    }
+    cout << "Enter 5 elements for Set 2: ";
+    for (i = 0; i < size2; i++) {
+        cin >> arr2[i];
+    }
+    cout << "\nEnter Element to Insert into Set 1: ";
+    cin >> elem;
+    arr1[size1] = elem;
+    size1++;
+    cout << "\nThe New Set 1 is: ";
+    for (i = 0; i < size1; i++) {
+        cout << arr1[i] << "  ";
+    }
+    cout <<"\nSet 1 Size is: " << ArraySize(size1) << endl;
+    int searchElem;
+    cout <<"\nEnter Element to Search in Set 1: ";
+    cin >> searchElem;
+    if (containsElement(arr1, size1, searchElem)) {
+        cout <<searchElem <<"Found in Set 1." << endl;
+    } else {
+        cout <<searchElem <<"Not Found in Set 1." << endl;
+    }
+    removeLastElement(arr1, size1);
+    cout << "\nSet 1 After Removing Last Element: ";
+    for (i = 0; i < size1; i++) {
+        cout << arr1[i] << "  ";
+    }
+    cout <<"\nSet 1 Size After Remove: " << ArraySize(size1) << endl;
+    intersection(arr1, size1, arr2, size2);
+    unionSets(arr1, size1, arr2, size2);
+    difference(arr1, size1, arr2, size2);
+    if (isSubset(arr1, size1, arr2, size2)) {
+        cout <<"\nSet 1 is a subset of Set 2." << endl;
+    } else {
+        cout <<"\nSet 1 is not a subset of Set 2." << endl;
+    }
+    return 0;
+}
+
