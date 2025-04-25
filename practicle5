@@ -1,0 +1,69 @@
+#include<iostream>
+#include<string>
+#include<stack>
+
+using namespace std;
+
+struct node
+{
+    node *left = NULL;
+    char data;
+    node *right = NULL;
+};
+
+class tree
+{
+public:
+    char arr[11];
+    node *root;
+    
+    void create()
+    {
+        cout << "Enter the data of the prefix expression : \n";
+        for (int i = 0; i < 11; i++)
+        {
+            cin >> arr[i];
+        }
+
+        stack <node*> stk;
+        for (int i = 10; i >= 0; i--) 
+        {
+            char ch = arr[i];
+            node* newnode = new node();
+            newnode->data = ch;
+            
+            if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
+            {
+                newnode->left = stk.top();
+                stk.pop();
+                newnode->right = stk.top();
+                stk.pop();
+            }
+
+            stk.push(newnode);
+        }
+
+        root = stk.top();  
+    }
+
+    void display(node* root) 
+    {
+        if (root == NULL) return;  
+
+        display(root->left);  
+        display(root->right); 
+        cout << root->data << " ";
+		 
+    }
+};
+
+int main()
+{
+    tree ob;
+    ob.create();
+    
+    cout << "\nThe tree in post-order is: ";
+    ob.display(ob.root); 
+    
+    return 0;
+}
