@@ -1,0 +1,69 @@
+#include<iostream>
+#include<string>
+using namespace std;
+
+struct node{
+	string locname;
+	node* next;
+};
+
+class adjecency_list{
+	public:
+		node* list[4];
+		node *temp,*nnode,*temp1;
+		int loc,num;
+		string location;
+		void creation(){
+			cout<<"Enter how many locations:";
+			cin>>loc;
+			for(int i=0;i<=3;i++){
+				list[i]=new node;
+				cout<<"Enter location "<<i+1<<":";
+				cin>>list[i]->locname;
+				list[i]->next=NULL;		
+			}
+		}
+		void linking(){
+			for(int i=0;i<loc;i++){
+				cout<<"Enter the number of links for "<<list[i]->locname<<":";
+				cin>>num;
+				temp=list[i];
+				for(int j=0;j<num;j++){
+					nnode=new node;
+					nnode->next=NULL;
+					cout<<"Enter the linking location:";
+					cin>>nnode->locname;
+				while(temp->next!=NULL){
+					temp=temp->next;
+				}
+				temp->next=nnode;
+				temp=nnode;
+				}
+			}
+		}
+		
+		void display(){
+			for(int i=0;i<loc;i++){
+				cout<<list[i]->locname<<" :";
+				temp1=list[i];
+				temp1=temp1->next;
+				while(temp1!=NULL) {
+					cout<<temp1->locname<<"->";
+					temp1=temp1->next;
+				} 		
+				cout<<endl;
+			}
+		}
+		
+		void BFS(){
+			
+		}
+};
+
+int main(){
+	adjecency_list A;
+	A.creation();
+	A.linking();
+	A.display();
+	return 0;
+}
