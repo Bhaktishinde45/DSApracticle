@@ -1,178 +1,116 @@
-#include<iostream> 
-#include<stack> 
-#include<queue> 
+#include <iostream> 
+#include <queue> 
+#include <string> 
+#define m 50 
 using namespace std; 
-struct node 
-{ 
- public: 
- node *next; 
- int data; 
-}; 
-class matrix 
-{ 
- public: 
- int n,i,j,p,t,c,c1,count; 
- int M[30][30]; 
- int city[10]; 
- int visited[10],visited1[10]; 
- node *list[10],*nnode,*temp; 
- int n1,m; 
- void create() 
- { 
- cout<<"\n enter the no.of vertices"; 
- cin>>n1; 
- for(int i=0;i<n1;i++) 
- { 
-  cout<<"\n enter the name of vertex:- "; 
-  list[i]=new node; 
-  cin>>list[i]->data; 
-  list[i]->next=NULL; 
-  cout<<"\n enter the no.of vertices connected to "<<list[i]->data<<":- "; 
-  cin>>m; 
-  temp=list[i]; 
-  for(int j=0;j<m;j++) 
-  { 
-   nnode=new node; 
-   cout<<"\n enter the name of vertex connected to "<<list[i]->data<<":- "; 
-   cin>>nnode->data; 
-   nnode->next=NULL; 
-   temp->next=nnode; 
-      temp=nnode; 
-  } 
- } 
- for(int i=0;i<n1;i++) 
- { 
-  temp=list[i]; 
-  cout<<temp->data<<"->"; 
-  temp=temp->next; 
-  while(temp!=NULL) 
-  { 
-   cout<<temp->data<<" "; 
-   temp=temp->next; 
-  } 
-  cout<<endl; 
- } 
-} 
-  
- void read() 
- { 
-    cout<<"\n enter the no.of vertex :-"; 
-       cin>>n; 
-    for(i=1;i<=n;i++) 
-    { 
-     for(j=1;j<=n;j++) 
-    { 
-       M[i][j]=0; 
-    } 
-    } 
-    cout<<"\n enter how many path exits:- "; 
-    cin>>p; 
-    for(i=1;i<=p;i++) 
-    { 
-        cout<<"\n enter the source city:-"; 
-        cin>>c; 
-        cout<<"\n enter the destination city:-"; 
-        cin>>c1;                                                                    
-        M[c][c1]=M[c1][c]=1; 
-    } 
-   } 
-   void display() 
-   { 
-      for(i=1;i<=n;i++) 
-    { 
-     for(j=1;j<=n;j++) 
-    { 
-       cout<<M[i][j]<<" "; 
-    } 
-    cout<<endl; 
-    } 
-   } 
-   void DFS() 
-   { 
-      stack<int>s1; 
-      int v1,v2,v3; 
-      int flag,count=0; 
-      cout<<"\n enter the starting vertex="; 
-      cin>>v1; 
-      s1.push(v1); 
-      visited[v1]=1; 
-      cout<<v1<<" "; 
-      while(!s1.empty()) 
-      { 
-       v2=s1.top(); 
-       count++; 
-       flag=0; 
-        for(v3=1;v3<=n;v3++) 
-        { 
-          if(v1!=v3 && M[v2][v3]!=0  && visited[v3]==0) 
-          { 
-          s1.push(v3); 
-          visited[v3]=1; 
-          cout<<v3<<" "; 
-          flag=1; 
-          break; 
-     } 
-    } 
-    if(flag==0) 
-    { 
-       s1.pop(); 
-    } 
-    if(count==n) 
-    break; 
-     } 
-   } 
-   void BFS() 
-   { 
-      queue<int>q; 
-      int v,s; 
-      cout<<"\n enter the starting vertex="; 
-      cin>>v; 
-      q.push(v); 
-      visited1[v]=1; 
-      while(!q.empty()) 
-      { 
-       s=q.front(); 
-       cout<<s<<" "; 
-       q.pop(); 
-       for(int i=0;i<n1;i++) 
-        { 
-            if(list[i]->data==s) 
-            { 
-                temp=list[i]->next;   
-                break; 
-            } 
+class obst { 
+public: 
+    string arr[m]; 
+    int p[m]; 
+    int q[m]; 
+    int w[m][m], c[m][m], r[m][m]; 
+    int n, j, minCost, s = 0, k; 
+    void get() { 
+        cout << "\nEnter the number of keys: "; 
+        cin >> n; 
+ 
+        for (int i = 1; i <= n; i++) { 
+            cout << "Enter key " << i << ": "; 
+            cin >> arr[i]; 
         } 
-          while(temp!=NULL) 
-          { 
-           if(visited1[temp->data]==0) 
-           { 
-         q.push(temp->data); 
-         visited1[temp->data]=1; 
-      } 
-      temp=temp->next; 
-     } 
-     } 
-   } 
-    
-}; 
-int main() 
-{ 
- matrix m; 
- m.read(); 
- m.display(); 
- for(int i=1; i<=10; i++)  
- { 
-       m.visited[i] = 0; 
+        cout << "Enter successful probabilities:\n"; 
+        for (int i = 1; i <= n; i++) { 
+            cin >> p[i]; 
+        } 
+        cout << "Enter unsuccessful probabilities:\n"; 
+        for (int i = 0; i <= n; i++) { 
+            cin >> q[i]; 
+        } 
     } 
-    for(int i=0;i<10;i++) 
-    { 
-     m.visited1[i]=0; 
- } 
-    m.count = 1;  
-    cout<<"\n DFS traversal:-"; 
-    m.DFS(); 
-    m.create(); 
-    cout<<"\n BFS traversal:-"; 
-    m.BFS(); 
- return 0; 
+    void tabel() { 
+        for (int i = 0; i <= n; i++) { 
+            w[i][i] = q[i]; 
+            c[i][i] = r[i][i] = 0; 
+        } 
+        for (int i = 0; i < n; i++) { 
+            w[i][i + 1] = q[i + 1] + p[i + 1] + w[i][i]; 
+            c[i][i + 1] = w[i][i + 1]; 
+            r[i][i + 1] = i + 1; 
+        } 
+        for (int d = 2; d <= n; d++) { 
+            for (int i = 0; i + d <= n; i++) { 
+                j = i + d; 
+                w[i][j] = q[j] + p[j] + w[i][j - 1]; 
+                minCost = 999999; 
+                for (k = i + 1; k <= j; k++) { 
+                    int cost = w[i][j] + c[i][k - 1] + c[k][j]; 
+                    if (minCost > cost) { 
+                        s = k; 
+                        minCost = cost; 
+                    } 
+                } 
+                c[i][j] = minCost; 
+                r[i][j] = s; 
+            }}} 
+    void displayt() { 
+        for (int d = 0; d <= n; d++) { 
+            cout << "\n\nFor difference " << d; 
+            cout << "\nStarting vertex\t\tWeight\t\tCost\t\tRoot"; 
+            for (int i = 0; i + d <= n; i++) { 
+                j = i + d; 
+                cout << "\n\t" << i << "\t\t" << w[i][j] << "\t\t" << c[i][j] << "\t\t" << r[i][j]; 
+        }}    } 
+    void show() { 
+        cout << "\nKeys: "; 
+        for (int i = 1; i <= n; i++) { 
+            cout << arr[i] << " "; 
+        } 
+        cout << "\nSuccessful probabilities: "; 
+        for (int i = 1; i <= n; i++) { 
+            cout << p[i] << " "; 
+        } 
+        cout << "\nUnsuccessful probabilities: "; 
+        for (int i = 0; i <= n; i++) { 
+            cout << q[i] << " "; 
+        } 
+        cout << endl; } 
+    void tree() { 
+        queue<int> q; 
+        q.push(0); 
+        q.push(n); 
+        cout << "\n\nTree Structure:"; 
+        cout << "\nRoot\t\tLeft\t\tRight\n"; 
+ 
+        while (!q.empty()) { 
+            int i = q.front(); q.pop(); 
+            int j = q.front(); q.pop(); 
+            if (r[i][j] == 0) continue; 
+          int rootIndex = r[i][j]; 
+            cout << arr[rootIndex]; 
+            if (r[i][rootIndex - 1] == 0) { 
+                cout << "\t\tNULL"; 
+            } else { 
+                q.push(i); 
+                q.push(rootIndex - 1); 
+                cout << "\t\t" << arr[r[i][rootIndex - 1]]; 
+            }  
+            if (r[rootIndex][j] == 0) { 
+                cout << "\t\tNULL"; 
+            } else { 
+                q.push(rootIndex); 
+                q.push(j); 
+                cout << "\t\t" << arr[r[rootIndex][j]]; 
+            } 
+            cout << endl; 
+        } }}; 
+int main() { 
+    obst ob; 
+    ob.get(); 
+    ob.show(); 
+    ob.tabel(); 
+    ob.displayt(); 
+    ob.tree(); 
+    return 0; 
 } 
+ 
+ 
