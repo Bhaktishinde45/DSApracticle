@@ -1,0 +1,168 @@
+#include<iostream>
+using namespace std;
+
+struct node
+{
+	int data;
+	node *left , *right;
+	
+};
+class bst
+{   public:
+	node *temp, *nnode, *root ,*temp1;
+	bst()
+	{
+		root=NULL;
+	}
+	void creation()
+	{	char ch;
+	    
+	   do
+	   {
+	   	nnode=new node;
+	   	cout<<"\n enter the number";
+	   	cin>>nnode->data;
+	    nnode->left=NULL;
+	    nnode->right=NULL;
+	    if(root==NULL)
+	    {
+	    	root=nnode;
+		}
+		else
+		{  
+		    temp=root;
+			while(1)
+			{
+				if(nnode->data<temp->data)
+				{
+					if(temp->left==NULL)
+					{
+						temp->left=nnode;
+						break;
+					}
+					temp=temp->left;
+					
+				}
+				else
+				{
+						if(temp->right==NULL)
+					{
+						temp->right=nnode;
+						break;
+					}
+					temp=temp->right;
+				}
+			}
+		}
+	
+	   	cout<<"\n do you want to continue=";
+	   	cin>>ch;
+	   }while(ch=='y');
+	   	cout<<"\nOUTPUT=";
+	   display(root);
+	}
+ void mirror(node *temp)
+ { if(temp!=NULL)
+ {
+ 
+ 	mirror(temp->left);
+ 	mirror(temp->right);
+ 	temp1=temp->left;
+ 	temp->left=temp->right;
+ 	temp->right=temp1;
+}
+ }
+
+ 	 
+
+
+ void display(node* temp)
+ {  
+ 	if( temp!=NULL)
+ 	{
+ 		display(temp->left);
+ 		cout<<temp->data<<" ";
+ 		display(temp->right);	
+	 }
+ }
+ void minimum()
+ { temp=root;
+ cout<<"\nminimum=";
+ 	while(temp->left!=NULL)
+ 	{
+ 		temp=temp->left;
+	 }
+	 cout<<temp->data;
+ }
+ void search()
+ { int key;
+ char c;
+ do{
+ 
+ 	cout<<"\nenter the element you want to search";
+ 	cin>>key;
+ 	temp=root;
+ 	int f=0;
+ 	while(temp!=NULL)
+ 	{
+ 		if(temp->data==key)
+ 		{
+ 			f=1;
+ 			break;
+		 }
+		 else
+		 {
+		 		if(temp->data<key)
+ 		{
+ 			temp=temp->right;
+		 }
+		 else
+		 {
+		 	 			temp=temp->left;
+		 }	 }	 
+	 }
+	 if(f==0)
+	 {
+	 	cout<<"\nelement is not found";
+	 }
+	 else
+	 {
+	 	cout<<"\nelement is found";
+	 }
+	 	cout<<"\n do you want to continue=";
+	   	cin>>c;
+ }while(c=='y');
+ }
+
+ 
+ 
+int nonode(node *temp)
+{
+	
+ 	if( temp!=NULL)
+ 	{  
+ 		int hl,hr,h;
+ 	 	hl=nonode(temp->left);
+ 	 	hr=nonode(temp->right);
+ 	  h=max(hl,hr)+1;
+ 	  return h;
+ 	 }
+ 	 
+ 	 	
+	  
+}
+ };
+int main()
+{   
+	bst b;
+	b.creation();
+	b.minimum();
+	b.search();
+//	b.nonode(b.root);
+	b.mirror(b.root);
+	cout<<"\nnumber of node in logest path= ";
+	cout<<b.nonode(b.root);
+	cout<<"\n MIRROR = ";
+	b.display(b.root);
+	return 0;
+}
